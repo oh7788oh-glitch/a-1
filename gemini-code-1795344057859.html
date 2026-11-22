@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이미지 뷰어</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #111;
+    overflow: hidden;
+  }
+
+  #char {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+  }
+</style>
+</head>
+<body>
+
+  <img id="char" src="" alt="이미지">
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+
+    // 1. 이미지 주소 가져오기 (입력 없으면 기본 벨리안 16, 17번 적용)
+    const imgParam = params.get('img');
+    const images = imgParam 
+      ? imgParam.split(',').map(url => url.trim())
+      : [
+          'https://oh7788oh-glitch.github.io/a-1/벨리안.16.png',
+          'https://oh7788oh-glitch.github.io/a-1/벨리안.17.png'
+        ];
+
+    // 2. 전환 속도 가져오기 (밀리초 단위 / 기본값: 400 = 0.4초)
+    const speed = parseInt(params.get('speed')) || 400;
+
+    // 3. 이미지 번갈아 보여주기
+    const imgEl = document.getElementById('char');
+    let index = 0;
+    imgEl.src = images[0];
+
+    if (images.length > 1) {
+      setInterval(() => {
+        index = (index + 1) % images.length;
+        imgEl.src = images[index];
+      }, speed);
+    }
+  </script>
+</body>
+</html>
